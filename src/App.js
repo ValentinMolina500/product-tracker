@@ -1,28 +1,45 @@
 import './App.css';
-import { Button, Grid, GridItem, Heading} from '@chakra-ui/react';
+import { Button, Grid, GridItem, Heading, Text } from '@chakra-ui/react';
+import BarcodeScannerComponent from "react-webcam-barcode-scanner";
+import { useEffect, useState } from 'react';
 
 function App() {
-  return (
-    <div className="App">
-        <Grid height="100vh" width="100vw" gridTemplateRows="auto 1fr auto">
+    const [data, setData] = useState(null);
 
-            {/* Row 1 */}
-           <GridItem>
-                <Heading>Product Tracker</Heading>
-           </GridItem>
+    useEffect(() => {
+        console.log(data);
+    }, [data])
+    return (
+        <div className="App">
+            <Grid height="100vh" width="100vw" gridTemplateRows="auto 1fr auto">
 
-            {/* Row 2 */}
-            <GridItem bg="pink">
+                {/* Row 1 */}
+                <GridItem>
+                    <Heading>Product Tracker</Heading>
+                    <Text>{data}</Text>
+                </GridItem>
+
+                {/* Row 2 */}
+                <GridItem bg="pink">
+
+                </GridItem>
+
+                {/* Row 3 */}
+                <GridItem> 
+                {!data &&  <BarcodeScannerComponent
+                    width={500}
+                    height={500}
+                    onUpdate={(err, result) => {
+                        if (result) setData(result.text)
+                        else setData(null)
+                    }}
+                />}
                
-            </GridItem>
-            
-             {/* Row 3 */}
-            <GridItem>
-                <Button>Scan Product</Button>
-            </GridItem>
-        </Grid>
-    </div>
-  );
+                    <Button>Scan Product</Button>
+                </GridItem>
+            </Grid>
+        </div>
+    );
 }
 
 export default App;
