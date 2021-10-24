@@ -191,6 +191,8 @@ function Location(props) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [currPhoto, setCurrPhoto] = useState(null);
     const [itemsForLocation, setItemsForLocation] = useState([]);
+    const [update, setUpdate] = useState({});
+
     useEffect(() => {
         const currPos = nearbyLocations[locId];
 
@@ -222,7 +224,7 @@ function Location(props) {
                 setItemsForLocation(final);
 
             })
-    }, [nearbyLocations, locId]);
+    }, [nearbyLocations, locId, update]);
 
     const currPos = nearbyLocations[locId];
 
@@ -230,6 +232,8 @@ function Location(props) {
 
         try {
             await firebase.addNewProduct(currPos.reference, barcode);
+            const details = await firebase.getItemDetails(barcode);
+            setItemsForLocation(itemsForLocation.concat(details.val()));
 
         } catch (err) {
             alert(err);
