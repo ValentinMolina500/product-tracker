@@ -3,6 +3,9 @@ import { Button, Grid, GridItem, Heading, Text } from '@chakra-ui/react';
 import BarcodeScannerComponent from "react-webcam-barcode-scanner";
 import { useEffect, useState } from 'react';
 import MapContainer from './MapContainer';
+
+import firebase from './utilities/firebase';
+
 function App() {
     const [data, setData] = useState(null);
 
@@ -32,7 +35,6 @@ function App() {
                         height={500}
                         onUpdate={(err, result) => {
                             if (result) setData(result.text)
-                            //else setData(null)
                         }}
                     />}
 
