@@ -17,7 +17,20 @@ class Firebase {
       console.log('Firebase init!');
     }
 
-    
+    addNewProduct = (locationReference, barcodeNumber) => {
+        return this.db.ref(`/${locationReference}/${barcodeNumber}`).set({
+            active: true
+        })
+    }
+
+    getItemsForLocation = (locationReference) => {
+        console.log(`/${locationReference}`);
+        return this.db.ref(`/${locationReference}`).once('value');
+    }
+
+    getItemDetails = (barcode) => {
+        return this.db.ref(`/items/${barcode}`).once('value');
+    }
 }
 const firebase = new Firebase()
 
