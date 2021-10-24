@@ -1,13 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 
 function MapContainer(props) {
     const [selectedPlace, setSelectedPlace] = useState({});
 
-    return (
-        <Map google={props.google} zoom={14} containerStyle={{ position: 'relative' }}>
+    const [ currentPosition, setCurrentPosition ] = useState({});
 
-            <Marker name={'Current location'} />
+    const success = position => {
+        const currentPosition = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        }
+        setCurrentPosition(currentPosition);
+      };
+
+    useEffect(() => {
+    navigator.geolocation.getCurrentPosition(success);
+    }, [])
+
+    return (
+        <Map google={props.google} 
+        center={currentPosition} 
+        zoom={14} containerStyle={{ position: 'relative' }}>
+
+            <Marker position={currentPosition}/>
 
             <InfoWindow>
                 <div>
